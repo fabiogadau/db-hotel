@@ -14,14 +14,14 @@ Sempre utilizzando phpMyAdmin, come fatto in classe eseguire le seguenti queries
 
 	SELECT *
 	FROM `ospiti`
-	WHERE `date_of_birth` >= '1988-01-01';
+	WHERE YEAR(`date_of_birth`) > '1988';
 
 
 - Seleziona tutti gli ospiti che hanno più di 20 anni (al momento dell’esecuzione della query)
 
 	SELECT *
 	FROM `ospiti`
-	WHERE (YEAR(CURRENT_DATE()) - YEAR(`date_of_birth`)) >= 20;
+	WHERE (YEAR(CURRENT_DATE()) - YEAR(`date_of_birth`)) > 20;
 
 
 - Seleziona tutti gli ospiti il cui nome inizia con la D
