@@ -21,14 +21,27 @@ Sempre utilizzando phpMyAdmin, eseguire le seguenti queries:
       GROUP BY `p`.`id`;
 
 
-- Stampare Nome, Cognome, Prezzo e Pagante per tutte le prenotazioni fatte a Maggio 2018
+- Stampare Nome, Cognome e Prezzo per tutte le prenotazioni fatte a Maggio 2018
 
-
+      SELECT `paganti`.`name`, `paganti`.`lastname`, `pagamenti`.`price`, `prenotazioni`.`created_at` AS `data prenotazione`
+      FROM `pagamenti`
+      INNER JOIN `paganti`
+      ON `pagamenti`.`pagante_id` = `paganti`.`id`
+      INNER JOIN `prenotazioni`
+      ON `pagamenti`.`prenotazione_id` = `prenotazioni`.`id`
+      WHERE YEAR(`prenotazioni`.`created_at`) = '2018' AND MONTH(`prenotazioni`.`created_at`) = '05';
 
 
 - Fai la somma di tutti i prezzi delle prenotazioni per le stanze del primo piano
 
-
+      SELECT SUM(`pagamenti`.`price`) AS `somma pagamenti`, `stanze`.`floor`, `pagamenti`.`status`
+      FROM `prenotazioni`
+      INNER JOIN `pagamenti`
+      ON `prenotazioni`.`id` = `pagamenti`.`prenotazione_id`
+      INNER JOIN `stanze`
+      ON `prenotazioni`.`stanza_id` = `stanze`.`id`
+      WHERE `stanze`.`floor` = '1'
+      AND `pagamenti`.`status` = 'accepted';
 
 
 - Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
@@ -44,7 +57,7 @@ Bonus: Group by
 
 - Conta gli ospiti raggruppandoli per anno di nascita
 
-      SELECT COUNT(*) AS `totale ospiti`, YEAR(`date_of_birth`)
+      SELECT COUNT(`id`) AS `totale ospiti`, YEAR(`date_of_birth`)
       FROM `ospiti`
       GROUP BY YEAR(`date_of_birth`);
 
